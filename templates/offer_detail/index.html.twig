@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+        {{ parent() }}
+        <a href="{{ path('offer_collection', {id: offer.location.id}) }}" class="mt-4 btn btn-danger">Revenir en arrière</a>
+        <h1 class="mt-4"> {{offer.title}} ({{offer.id}}) </h1>
+        <h2><em> {{offer.location.name}} </em></h2>
+        <p>Postée le: {{offer.postdate|date('d/m/Y')}} </p>
+        <p>Descriptif du post:</p>
+        <p> {{offer.description}} </p>
+</div>
+{% endblock %}

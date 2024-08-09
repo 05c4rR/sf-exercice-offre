@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    {{ parent() }}
+    <a href="{{ path('offer_locations') }}" class="mt-4 btn btn-danger">Revenir en arrière</a>
+    {% for location in location %}
+        <h1 class="mt-4"> Les offres à {{ location.name }} ({{location.id}}) </h1>
+    {% endfor %}
+
+    <ul>
+    {% for offer in offers %}
+        <li> <a href=" {{ path('offer_detail', {id: offer.id}) }} "> {{offer.title}} ({{offer.id}}) </a></li>
+    {% else %}
+        <p>Aucune offre dans cette ville</p>
+    {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

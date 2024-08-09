@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+    <a href="{{ path('offer_locations') }}" class="mt-4 btn btn-danger">Revenir en arrière</a>
+    <h1 class="mt-4">{{ page_name }}</h1>
+    {{ form(form) }}
+
+</div>
+{% endblock %}

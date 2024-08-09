@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    {{ parent() }}
+
+    {# FLASH MESSAGES #}
+    {% for type, messages in app.flashes(['success', 'info', 'warning', 'danger']) %}
+        {% for message in messages %}
+            <div class="mt-4 mb-4 alert alert-{{ type }}" role="alert">
+            {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <h1 class="mt-4">Où recherchez vous du travail ?</h1>
+    <ul>
+    {% for location in locations %}
+        <li>
+            <a href="{{ path('offer_collection', {id: location.id}) }}">{{location.name}} ({{location.id}})</a>
+        </li>
+    {% else %}
+
+    {% endfor %}
+    </ul>
+    <a href="{{ path('offer_add') }}" class="btn btn-primary">Ajouter une offre</a>
+</div>
+
+{% endblock %}
