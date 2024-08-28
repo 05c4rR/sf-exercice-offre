@@ -35,6 +35,7 @@ class AppFixtures extends Fixture
                 ->setPostDate($faker->dateTime())
                 ->setVisible($faker->boolean())
                 ->setLocation($locations[random_int(0, count($locations)-1)]);
+                
             $manager->persist($offer);
         }
         $manager->flush();

@@ -6,6 +6,9 @@ use App\Repository\OfferRepository;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Context;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
 class Offer
@@ -13,10 +16,12 @@ class Offer
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('offers_read')]
     private ?int $id = null;
-
+    
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups('offers_read')]
     #[Assert\Length(
         min: 1,
         max: 255,
@@ -30,6 +35,8 @@ class Offer
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups('offers_read')]
+    #[Context([DateTimeNormalizer::FORMAT_KEY =>'d/m/Y'])]
     private ?\DateTimeInterface $postDate = null;
 
     #[ORM\Column]
@@ -38,6 +45,7 @@ class Offer
 
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('offers_read')]
     private ?Location $location = null;
 
 
