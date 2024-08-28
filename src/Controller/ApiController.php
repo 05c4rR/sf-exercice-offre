@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
+use App\Repository\LocationRepository;
 use App\Repository\OfferRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[Route('/api')]
 class ApiController extends AbstractController
@@ -15,7 +15,7 @@ class ApiController extends AbstractController
     public function offerList(OfferRepository $offerRepository): Response
     {
         $offers = $offerRepository->findAll();
-        
+
         return $this->json($offers, context:[
             'groups' => ['offers_read']
         ]);
@@ -28,6 +28,16 @@ class ApiController extends AbstractController
 
         return $this->json($offer, context:[
             'groups' => ['offers_read']
+        ]);
+    }
+
+    #[Route('/location', name:'api_location_list', methods:['GET'])]
+    public function locationList(LocationRepository $locationRepository): Response
+    {
+        $location = $locationRepository->findAll();
+
+        return $this->json($location, context:[
+            'groups' => ['location_read']
         ]);
     }
 }

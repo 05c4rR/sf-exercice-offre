@@ -16,12 +16,18 @@ class Offer
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('offers_read')]
+    #[Groups([
+        'offers_read'
+        ,'location_read'
+        ])]
     private ?int $id = null;
     
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups('offers_read')]
+    #[Groups([
+        'offers_read'
+        ,'location_read'
+        ])]
     #[Assert\Length(
         min: 1,
         max: 255,

@@ -14,17 +14,24 @@ class Location
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('offers_read')]
+    #[Groups([
+        'offers_read'
+        ,'location_read'
+        ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('offers_read')]
+    #[Groups([
+        'offers_read'
+        ,'location_read'
+        ])]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Offer>
      */
     #[ORM\OneToMany(targetEntity: Offer::class, mappedBy: 'location')]
+    #[Groups(['location_read'])]
     private Collection $offers;
 
     public function __construct()
