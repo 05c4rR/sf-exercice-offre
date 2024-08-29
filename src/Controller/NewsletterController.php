@@ -4,18 +4,17 @@ namespace App\Controller;
 
 use App\Entity\NewsletterEmail;
 use App\Form\NewsletterType;
+use App\Newsletter\MailConfirmation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 
 class NewsletterController extends AbstractController
 {
     #[Route('/newsletter/subscribe', name: 'newsletter_subscribe', methods: ["GET", "POST"])]
-    public function newsletterSubscribe(Request $request, EntityManagerInterface $em, MailerInterface $mailer):Response
+    public function newsletterSubscribe(Request $request, EntityManagerInterface $em, MailConfirmation $mailConfirmation):Response
     {
         $newsletter = new NewsletterEmail;
         $form = $this->createForm(NewsletterType::class, $newsletter);
@@ -26,14 +25,7 @@ class NewsletterController extends AbstractController
             $em->persist($newsletter);
             $em->flush();
 
-            $email = (new Email())
-            ->from('oscar@symfo.ny')
-            ->to('you@example.com')
-            ->subject('Email envoyé par Symfony!')
-            ->text('C\'est assez stylé en vrai!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
-
-            $mailer->send($email);
+            $mailConfirmation->send($newsletter);
 
             return $this->redirectToRoute('newsletter_success');
         }
