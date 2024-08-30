@@ -4,22 +4,29 @@ namespace App\DataFixtures;
 
 use App\Entity\Location;
 use App\Entity\Offer;
+use App\Entity\User;
+use App\Entity\UserSecured;
 use Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
     private const NB_OFFERS = 50;
     private const NB_LOCATIONS = 5;
+    private const NB_USERS = 25;
 
+    public function __construct(
+        private UserPasswordHasherInterface $hasher
+    ) {}
 
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
         $locations = [];
 
-        for ($i = 0; $i < self::NB_LOCATIONS; $i++){
+        for ($i = 0; $i < self::NB_LOCATIONS; $i++) {
             $location = new Location;
             $location->setName($faker->city());
 
@@ -27,7 +34,7 @@ class AppFixtures extends Fixture
             $locations[] = $location;
         }
 
-        for ($i = 0; $i < self::NB_OFFERS; $i++){
+        for ($i = 0; $i < self::NB_OFFERS; $i++) {
             $offer = new Offer;
             $offer
                 ->setTitle($faker->jobTitle())
@@ -38,6 +45,34 @@ class AppFixtures extends Fixture
                 
             $manager->persist($offer);
         }
+
+        // FAKE USERS NOT SECURED (( OUTDATED ))
+        // $outdatedUser = new User;
+        // $outdatedUser
+        //     ->setName('OutdateUser')
+        //     ->setEmail('test@old.com')
+        //     ->setProfilePicFilename('test');
+        
+        // $manager->persist($outdatedUser);
+        
+        $admin = new UserSecured;
+        $admin
+            ->setEmail('admin@test.com')
+            ->setPassword($this->hasher->hashPassword($admin, 'admin'))
+            ->setRoles(["ROLE_ADMIN"]);
+
+        $manager->persist($admin);
+        
+        for ($i = 0; $i < self::NB_USERS; $i++) {
+            $user = new UserSecured;
+            $user
+                ->setEmail($faker->email())
+                ->setPassword($this->hasher->hashPassword($user, $faker->word()));
+
+            $manager->persist($user);
+        }
+
         $manager->flush();
     }
+
 }

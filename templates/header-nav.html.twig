@@ -13,6 +13,13 @@
         <li class="nav-item">
           <a class="nav-link {% if 'newsletter' in route %}fw-bold text-light{% endif %}" href="{{path('newsletter_subscribe')}}">Notre newsletter</a>
         </li>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li class="nav-link fw-bold text-light" > {{app.user.userIdentifier}} </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{path('app_login')}}">Se connecter</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
 
