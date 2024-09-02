@@ -49,7 +49,7 @@ class Offer
     #[Assert\Type('boolean')]
     private ?bool $visible = null;
 
-    #[ORM\ManyToOne(inversedBy: 'offers')]
+    #[ORM\ManyToOne(inversedBy: 'offers', fetch: "EAGER")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups('offers_read')]
     private ?Location $location = null;
