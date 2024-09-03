@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\NewsletterEmailRepository;
+use App\Validator\IsNotSpam;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -18,6 +19,7 @@ class NewsletterEmail
 
     #[ORM\Column(length: 255)]
     #[Assert\Email]
+    #[IsNotSpam]
     private ?string $email = null;
 
     public function getId(): ?int
